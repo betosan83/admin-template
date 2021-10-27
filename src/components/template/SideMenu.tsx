@@ -1,4 +1,4 @@
-import { BellIcon, HomeIcon, SettingsIcon } from "../icons";
+import { BellIcon, HomeIcon, LogOutIcon, SettingsIcon } from "../icons";
 import Logo from "./Logo";
 import MenuItem from "./MenuItem";
 
@@ -6,18 +6,28 @@ import MenuItem from "./MenuItem";
 export default function SideMenu() {
 
     return (
-        <aside>
+        <aside className="flex flex-col">
             <div className={`
                 flex flex-col items-center justify-center
                 bg-gradient-to-r from-indigo-500 to-purple-800
                 h-20 w-20 
             `}>
-                <Logo/>
+                <Logo />
             </div>
+            <ul className="flex-grow">
+                <MenuItem url="/" text="Home" icon={HomeIcon} />
+                <MenuItem url="/settings" text="Settings" icon={SettingsIcon} />
+                <MenuItem url="/notifications" text="Notifications" icon={BellIcon} />
+            </ul>
             <ul>
-                <MenuItem url="/" text="Home" icon={HomeIcon}/>
-                <MenuItem url="/settings" text="Settings" icon={SettingsIcon}/>
-                <MenuItem url="/notifications" text="Notifications" icon={BellIcon}/>
+                <MenuItem
+                    onClick={() => console.log('logout')}
+                    text="LogOut" icon={LogOutIcon}
+                    className={`
+                        text-red-600
+                        hover:bg-red-400 hover:text-white
+                    `}
+                />
             </ul>
         </aside>
     )
