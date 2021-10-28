@@ -1,13 +1,27 @@
 import { createContext } from "react";
 
-const AppContext = createContext({
-    name: null
+type Theme = 'dark' | ''
+
+interface AppContextProps {
+    theme?: Theme
+    toggleTheme?: () => void
+}
+
+const AppContext = createContext<AppContextProps>({
+    theme: null,
+    toggleTheme: null
 })
 
 export function AppProvider(props) {
+
+    function toggleTheme() {
+        console.log('toggleTheme')
+    }
+
     return (
         <AppContext.Provider value={{
-            name: 'Test'
+            theme: 'dark',
+            toggleTheme
         }}>
             {props.children}
         </AppContext.Provider>

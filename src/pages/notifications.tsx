@@ -6,7 +6,7 @@ export default function Notifications() {
   return (
     <Layout title="Notifications" 
        subtitle="Manage your notifications.">
-      <h3>{data.name}</h3>
+      <h3>{data.theme}</h3>
     </Layout>
   )
 }
