@@ -33,7 +33,7 @@ export default function ButtonToggleTheme(props: ButtonToggleThemeProps) {
             w-14 lg:w-24 h-8 p-1 rounded-full 
         `}>
             <div className={`
-                hidden lg:flex items-center mr-4
+                hidden lg:flex items-center mr-6
                 text-gray-300
             `}>
                 <span className="text-sm">Dark</span>
