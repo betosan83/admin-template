@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 
 type Theme = 'dark' | ''
 
@@ -13,14 +13,15 @@ const AppContext = createContext<AppContextProps>({
 })
 
 export function AppProvider(props) {
+    const [theme, setTheme] = useState<Theme>('dark')
 
     function toggleTheme() {
-        console.log('toggleTheme')
+        setTheme(theme === '' ? 'dark' : '')
     }
 
     return (
         <AppContext.Provider value={{
-            theme: 'dark',
+            theme,
             toggleTheme
         }}>
             {props.children}
