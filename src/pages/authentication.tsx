@@ -1,23 +1,32 @@
 import { useState } from "react";
 import AuthInput from "../components/auth/AuthInput";
+import { WarningIcon } from "../components/icons";
 
 export default function Authentication() {
     const [mode, setMode] = useState<'login' | 'register'>('login')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
+
+    function showError(msg, time = 5) {
+        setError(msg)
+        setTimeout(() => setError(null), time + 1000)
+    }
 
     function submit() {
         if (mode === 'login') {
             console.log('login')
+            showError('Login error')
         } else {
             console.log('signup')
+            showError('Sig up error')
         }
     }
     return (
         <div className="flex h-screen items-center justify-center">
             <div className="hidden md:block md:w-1/2 lg:w-2/3">
                 <img className="h-screen w-full object-cover"
-                    src="https://source.unsplash.com/random" 
+                    src="https://source.unsplash.com/random"
                     alt="Auth image" />
             </div>
             <div className="m-10 w-full md:w-1/2 lg:w-1/3">
@@ -26,6 +35,18 @@ export default function Authentication() {
             `}>
                     {mode === 'login' ? 'Inform your E-mail and Password' : 'Sign Up!'}
                 </h1>
+
+                {error ? (
+                    <div className={`
+                    flex items-center
+                    bg-red-400 text-white py-3 px-5 my-2
+                    border border-red-700 rounded-lg
+                `}>
+                        {WarningIcon(6)}
+                        <span className="ml-3">{error}</span>
+                    </div>
+                ) : false}
+
                 <AuthInput
                     label="E-mail"
                     type="email"
