@@ -22,7 +22,7 @@ export default function Authentication() {
             </div>
             <div className="m-10 w-full md:w-1/2 lg:w-1/3">
                 <h1 className={`
-                text-xl font-bold mb-5
+                text-3xl font-bold mb-5
             `}>
                     {mode === 'login' ? 'Inform your E-mail and Password' : 'Sign Up!'}
                 </h1>
@@ -56,6 +56,25 @@ export default function Authentication() {
                 `}>
                     Join with Google!
                 </button>
+
+                {mode === 'login' ? (
+                    <p className="mt-8">
+                        New user?
+                        <a onClick={() => setMode('register')} className={`
+                            text-blue-500 hover:text-blue-700 font-semibold
+                            cursor-pointer
+                        `}> Register now!</a>
+                    </p>
+                ) : (
+                    <p className="mt-8">
+                        Already a member?
+                        <a onClick={() => setMode('login')} className={`
+                            text-blue-500 hover:text-blue-700 font-semibold
+                            cursor-pointer
+                        `}> Enter your e-mail and account.</a>
+                    </p>
+                )}
+
             </div>
         </div>
 
