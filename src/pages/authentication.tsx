@@ -14,8 +14,13 @@ export default function Authentication() {
         }
     }
     return (
-        <div className="flex flex-col h-screen items-center justify-center">
-            <div className="w-1/2">
+        <div className="flex h-screen items-center justify-center">
+            <div className="hidden md:block md:w-1/2 lg:w-2/3">
+                <img className="h-screen w-full object-cover"
+                    src="https://source.unsplash.com/random" 
+                    alt="Auth image" />
+            </div>
+            <div className="m-10 w-full md:w-1/2 lg:w-1/3">
                 <h1 className={`
                 text-xl font-bold mb-5
             `}>
