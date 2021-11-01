@@ -1,8 +1,11 @@
 import { useState } from "react";
 import AuthInput from "../components/auth/AuthInput";
 import { WarningIcon } from "../components/icons";
+import useAuth from "../data/hook/useAuth";
 
 export default function Authentication() {
+    const { user, googleLogin } = useAuth()
+
     const [mode, setMode] = useState<'login' | 'register'>('login')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')

@@ -3,14 +3,27 @@ import firebase from "../../firebase/config";
 import User from "../../model/User";
 
 interface AuthContextProps {
-    user: User
-    loginGoogle: () => Promise<void>
+    user?: User
+    googleLogin?: () => Promise<void>
 }
 
-const AuthContext = createContext({})
+const AuthContext = createContext<AuthContextProps>({})
+
+async function userModel(userFirebase: firebase.User): Promise<User> {
+    const token = await userFirebase.getIdToken()
+    return {
+        uid: userFirebase.uid,
+        name: userFirebase.displayName,
+        email: userFirebase.email,
+        token,
+        provider: userFirebase.providerData[0].providerId,
+        imageUrl: userFirebase.photoURL
+
+    }
+}
 
 export function AuthProvider(props) {
-    const [user, setUder] = useState<User>(null)
+    const [user, setUser] = useState<User>(null)
 
     async function googleLogin() {
         
