@@ -1,3 +1,4 @@
+import route from "next/router";
 import { createContext, useState } from "react";
 import firebase from "../../firebase/config";
 import User from "../../model/User";
@@ -26,7 +27,8 @@ export function AuthProvider(props) {
     const [user, setUser] = useState<User>(null)
 
     async function googleLogin() {
-        
+        console.log('Login google...')
+        route.push('/')
     }
 
     return (
