@@ -1,5 +1,5 @@
 import route from "next/router";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import firebase from "../../firebase/config";
 import User from "../../model/User";
 import Cookies from 'js-cookie'
@@ -34,6 +34,7 @@ function manageCookie(logged: boolean) {
 }
 
 export function AuthProvider(props) {
+    const [loading, setLoading] = useState(true)
     const [user, setUser] = useState<User>(null)
 
     async function configSession(userFirebase) {
@@ -41,9 +42,13 @@ export function AuthProvider(props) {
             const user = await userModel(userFirebase)
             setUser(user)
             manageCookie(true)
+            setLoading(false)
+            return user.email
         } else {
             setUser(null)
             manageCookie(false)
+            setLoading(false)
+            return false
         }
     }
 
@@ -51,13 +56,14 @@ export function AuthProvider(props) {
         const resp = await firebase.auth().signInWithPopup(
             new firebase.auth.GoogleAuthProvider()
         )
-        if (resp.user.email) {
-            const user = await userModel(resp.user)
-            setUser(user)
-            route.push('/')
-        }
-
+        configSession(resp.user)
+        route.push('/')   
     }
+
+    useEffect(() => {
+        const cancel = firebase.auth().onIdTokenChanged(configSession)
+        return () => cancel()
+    }, [])
 
     return (
         <AuthContext.Provider value={{
