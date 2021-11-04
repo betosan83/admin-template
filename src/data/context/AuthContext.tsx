@@ -7,6 +7,7 @@ import Cookies from 'js-cookie'
 interface AuthContextProps {
     user?: User
     googleLogin?: () => Promise<void>
+    logout?: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextProps>({})
@@ -24,7 +25,7 @@ async function userModel(userFirebase: firebase.User): Promise<User> {
 }
 
 function manageCookie(logged: boolean) {
-    if(logged) {
+    if (logged) {
         Cookies.set('admin-template-auth', logged, {
             expires: 7
         })
@@ -38,7 +39,7 @@ export function AuthProvider(props) {
     const [user, setUser] = useState<User>(null)
 
     async function configSession(userFirebase) {
-        if(userFirebase?.email) {
+        if (userFirebase?.email) {
             const user = await userModel(userFirebase)
             setUser(user)
             manageCookie(true)
@@ -53,11 +54,28 @@ export function AuthProvider(props) {
     }
 
     async function googleLogin() {
-        const resp = await firebase.auth().signInWithPopup(
-            new firebase.auth.GoogleAuthProvider()
-        )
-        configSession(resp.user)
-        route.push('/')   
+        try {
+            setLoading(true)
+            const resp = await firebase.auth().signInWithPopup(
+                new firebase.auth.GoogleAuthProvider()
+            )
+            configSession(resp.user)
+            route.push('/')
+        } finally {
+            setLoading(false)
+        }
+        
+    }
+
+    async function logout() {
+        try {
+            setLoading(true)
+            await firebase.auth().signOut()
+            await configSession(null)
+        } finally {
+            setLoading(false)
+        }
+
     }
 
     useEffect(() => {
@@ -68,7 +86,8 @@ export function AuthProvider(props) {
     return (
         <AuthContext.Provider value={{
             user,
-            googleLogin
+            googleLogin,
+            logout
         }}>
             {props.children}
         </AuthContext.Provider>
