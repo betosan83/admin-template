@@ -6,6 +6,7 @@ import Cookies from 'js-cookie'
 
 interface AuthContextProps {
     user?: User
+    loading?: boolean
     googleLogin?: () => Promise<void>
     logout?: () => Promise<void>
 }
@@ -79,13 +80,18 @@ export function AuthProvider(props) {
     }
 
     useEffect(() => {
-        const cancel = firebase.auth().onIdTokenChanged(configSession)
+        if(Cookies.get('admin-template-auth')) {
+            const cancel = firebase.auth().onIdTokenChanged(configSession)
         return () => cancel()
+        } else {
+            setLoading(false)
+        }
     }, [])
 
     return (
         <AuthContext.Provider value={{
             user,
+            loading,
             googleLogin,
             logout
         }}>
