@@ -1,6 +1,6 @@
 import useAppData from "../../data/hook/useAppData";
 import Content from "./Content";
-import ForceAuth from '../auth/ForceAuth'
+import ForceAuth from '../../functions/forceAuth'
 import SideMenu from "./SideMenu";
 import TopBar from "./TopBar";
 
@@ -13,8 +13,7 @@ interface LayoutProps {
 export default function Layout(props: LayoutProps) {
     const { theme } = useAppData()
 
-    return (
-        <ForceAuth>
+    return ForceAuth (
             <div className={`${theme} flex h-screen w-screen`}>
                 <SideMenu/>
                 <div className={`flex flex-col w-full p-7 
@@ -25,6 +24,5 @@ export default function Layout(props: LayoutProps) {
                     </Content>
                 </div>
             </div>
-        </ForceAuth>
     )
 }
