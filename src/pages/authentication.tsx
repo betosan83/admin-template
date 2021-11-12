@@ -4,7 +4,7 @@ import { WarningIcon } from "../components/icons";
 import useAuth from "../data/hook/useAuth";
 
 export default function Authentication() {
-    const { user, googleLogin } = useAuth()
+    const { signup, login, googleLogin } = useAuth()
 
     const [mode, setMode] = useState<'login' | 'register'>('login')
     const [email, setEmail] = useState('')
@@ -13,18 +13,21 @@ export default function Authentication() {
 
     function showError(msg, time = 5) {
         setError(msg)
-        setTimeout(() => setError(null), time + 1000)
+        setTimeout(() => setError(null), time + 5000)
     }
 
-    function submit() {
-        if (mode === 'login') {
-            console.log('login')
-            showError('Login error')
-        } else {
-            console.log('signup')
-            showError('Sig up error')
+    async function submit() {
+        try {
+            if (mode === 'login') {
+                await login(email, password)
+            } else {
+                await signup(email, password)
+            }
+        } catch(e) {
+            showError(e?.message ?? 'Unknown error!')
         }
     }
+
     return (
         <div className="flex h-screen items-center justify-center">
             <div className="hidden md:block md:w-1/2 lg:w-2/3">
